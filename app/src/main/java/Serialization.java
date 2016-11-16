@@ -1,5 +1,3 @@
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.nio.charset.Charset;
 
 import javax.script.ScriptEngine;
@@ -7,9 +5,8 @@ import javax.script.ScriptEngineManager;
 
 import org.apache.commons.io.IOUtils;
 
-import net.sf.cglib.proxy.Enhancer;
-import venkat.GroovyMethodInterceptor;
-import venkat.GroovyProxy;
+import venkat.GroovyProxyFactory;
+import venkat.SerializerUtils;
 
 public class Serialization {
 
@@ -20,20 +17,17 @@ public class Serialization {
 		Class<?> myClass = (Class<?>) engine.eval(groovyScript);
 
 		Object myObj = myClass.newInstance();
+		myObj = GroovyProxyFactory.createProxy(myObj);
 
-		Enhancer enhancer = new Enhancer();
+		/*-Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(myClass);
 		enhancer.setInterfaces(new Class[] { GroovyProxy.class });
 		enhancer.setCallback(new GroovyMethodInterceptor(myObj));
-		myObj = enhancer.create();
+		myObj = enhancer.create();*/
 
-		// Serialization.class.getClassLoader().loadClass("org.venkat.Blah");
+		// Serialization.class.getClassLoader().loadClass("org.venkat.Blah");\
 
-		FileOutputStream fos = new FileOutputStream("object.serialized");
-		ObjectOutputStream oos = new ObjectOutputStream(fos);
-		oos.writeObject(myObj);
-		oos.close();
-		fos.close();
+		SerializerUtils.serialize(myObj, "object.serialized");
 	}
 
 }

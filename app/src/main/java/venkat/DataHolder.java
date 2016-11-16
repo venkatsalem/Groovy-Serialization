@@ -13,25 +13,13 @@ public class DataHolder implements Serializable {
 
 	private byte[] data;
 
-	public byte[] getData() {
-		return data;
-	}
-
-	public void setData(byte[] data) {
-		this.data = data;
-	}
-
-	public DataHolder() {
-
-	}
-
 	public DataHolder(Object serItem) {
 		try {
 			// create a byte array output stream
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
 			oos.writeObject(serItem);
-			setData(baos.toByteArray());
+			data = baos.toByteArray();
 			baos.close();
 			oos.close();
 		} catch (Exception e) {
@@ -51,6 +39,6 @@ public class DataHolder implements Serializable {
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-		return returnValue;
+		return GroovyProxyFactory.createProxy(returnValue);
 	}
 }
