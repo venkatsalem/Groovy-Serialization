@@ -12,10 +12,12 @@ import groovy.lang.GroovyObject;
 public class Deserialization {
 
 	public static void main(String[] args) throws Exception {
-		ScriptEngineManager factory = new ScriptEngineManager();
+		ScriptEngineManager factory = new ScriptEngineManager(Serialization.class.getClassLoader());
 		ScriptEngine engine = factory.getEngineByName("Groovy");
 		String groovyScript = IOUtils.toString(Serialization.class.getResourceAsStream("/blah.groovy"), Charset.defaultCharset());
 		Class<?> myClass = (Class<?>) engine.eval(groovyScript);
+		
+		//Class.forName("org.venkat.Blah");
 
 		FileInputStream fis = new FileInputStream("object.serialized");
 		ObjectInputStream ois = new ObjectInputStream(fis);
