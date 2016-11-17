@@ -33,5 +33,4 @@ public class GroovyObjectInputStream extends ObjectInputStream {
 			return Thread.currentThread().getContextClassLoader().loadClass(desc.getName());
 		}
 	}
-
 }
